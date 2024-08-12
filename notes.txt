@@ -1,0 +1,9 @@
+IMPORTAR DATOS DE PRUEBA
+  Lo que ellos me enviaron fueron los excel.
+  Esos los importé en las tablas que cree, usando los csv.
+
+  Para importarlos en phpmyadmin, hay que poner que ignore la primera columna
+
+  Los scripts para crear las tablas vacías los dejé en create-tables
+  
+  Finalmente exporté todo como sql en el archivo speed_agro.sql
