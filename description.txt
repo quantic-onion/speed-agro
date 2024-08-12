@@ -1,0 +1,8 @@
+Tomando la información que se encuentra en la base de datos,
+se generará un archivo de excel ordenado y exportable.
+
+Para generar este archivo se contará con filtros temporales para
+poder ordenar la información por día, mes o entre rango de fecha determinada.
+
+Además podremos incorporar los filtros adicionales según las necesidades del cliente.
+
