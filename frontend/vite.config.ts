@@ -14,5 +14,14 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  css: {
+    preprocessorOptions: {
+      stylus: {
+        additionalData: `
+          @import "/../src/assets/variables";
+        `,
+      },
+    },
+  },
 })

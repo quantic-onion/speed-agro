@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import ReportView from '@/views/ReportView.vue'
+import { RouterView } from 'vue-router';
+// components
+import ReportsContentStatus from '@/components/reports-content-status/ReportsContentStatus.vue';
 </script>
 
 <template>
@@ -14,13 +16,12 @@ import ReportView from '@/views/ReportView.vue'
       <h1>Reportes</h1>
     </header>
     
-    <ReportView />
+    <RouterView />
+    <ReportsContentStatus />
   </div>
 </template>
 
 <style lang="stylus" scoped>
-$color-primary = #1A7043
-
 .app-content
   display flex
   flex-direction column
