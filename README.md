@@ -33,3 +33,9 @@ This database is just for testing purposes
 each time you want to play with it, just:
 - open Docker Desktop
 - press play button on speed-agro
+
+
+## Build
+
+### Prerequisites
+- Follow Taure prerequisites: https://tauri.app/v1/guides/getting-started/prerequisites/
