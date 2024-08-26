@@ -19,9 +19,8 @@
     },
     "windows": [
       {
-        "title": "speed-agro",
-        "width": 800,
-        "height": 600
+        "title": "SpeedAgro reportes",
+        "maximized": true
       }
     ],
     "security": {
@@ -30,7 +29,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "speed-agro.app",
+      "identifier": "speed-agro.reports",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

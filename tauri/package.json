@@ -6,15 +6,24 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build-only": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "tauri": "tauri"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-brands-svg-icons": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "pinia": "^2.1.7",
     "vue": "^3.3.4",
+    "vue-router": "^4.3.3",
     "@tauri-apps/api": "^1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
+    "stylus": "^0.63.0",
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
     "vue-tsc": "^2.0.22",
