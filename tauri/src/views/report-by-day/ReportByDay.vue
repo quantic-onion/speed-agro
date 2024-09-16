@@ -15,12 +15,13 @@ async function download() {
     // console.log('Respuesta de Tauri1:', response);
     // response = await invoke('add_numbers', { a: 3, b: 9 });
     // console.log('Respuesta de Tauri2:', response);
-    const response = await invoke('test_db');
+    const response = await invoke('fetch_data');
     console.log('Respuesta de Tauri2:', response);
+    console.log('DESCARGO', selectedDate.value);
   } catch (error) {
+    alert(error);
     console.error('Error al llamar a la función de Tauri:', error);
   }
-  console.log('DESCARGO', selectedDate.value);
 }
 </script>
 

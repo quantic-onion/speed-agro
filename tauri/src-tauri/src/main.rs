@@ -1,14 +1,13 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-extern crate mysql;
-use mysql::*;
-use mysql::prelude::*;
-use serde::Serialize;
+use futures::stream::StreamExt;
+use tiberius::{AuthMethod, Config, Client};
+use tokio::net::TcpStream;
+use tokio_util::compat::TokioAsyncWriteCompatExt;
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn greet(name: &str) -> String {
+async fn greet(name: String) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
@@ -17,48 +16,63 @@ fn add_numbers(a: i32, b: i32) -> i32 {
     a + b
 }
 
-#[derive(Debug, PartialEq, Eq, Serialize, FromRow)] // Deriva la trait FromRow
-struct Record {
-    id: i32,
-    date_and_time: String, // Use String to store the datetime as a string, or use NaiveDateTime if you want to parse it.
-    millitm: i32,
-    tag_index: i32,
-    val: String,
-    status: String,
-    marker: String,
-}
-
 #[tauri::command]
-fn test_db() -> Result<Vec<Record>, String> { // Cambia el tipo de error a String
-    // Define la URL de conexión a la base de datos
-    let url = "mysql://root:root@localhost:3306/speed_agro";
+async fn fetch_data() -> Result<Vec<i16>, String> {
+    // Configure the connection to SQL Server using Windows Authentication
+    let mut config = Config::new();
+    config.host("Licha-PC");  // Localhost since you are connecting to a local instance
+    config.port(1433);         // Default SQL Server port
+    config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
 
-    // Crea una conexión pool
-    let pool = Pool::new(url).map_err(|e| e.to_string())?;
+    config.authentication(AuthMethod::Integrated);
+    config.trust_cert();       // Trust certificate for secure connection
+    
+    // The database to connect to
+    // config.database("Datos_Envasado");
 
-    // Obtén una conexión del pool
-    let mut conn = pool.get_conn().map_err(|e| e.to_string())?;
+    // Establish the TCP connection
+    let tcp = TcpStream::connect(config.get_addr()).await.map_err(|e| format!("Failed to connect: {}", e))?;
+    let tcp = tcp.compat_write();
 
-    let rows: Vec<Row> = conn.query(r"SELECT * FROM descargas").map_err(|e| e.to_string())?;
+    // Create the client
+    let mut client = Client::connect(config, tcp).await.map_err(|e| format!("Failed to create client: {}", e))?;
 
-    let descargas: Vec<Record> = rows.into_iter().map(|row| {
-        Record {
-            id: row.get("id").unwrap_or_default(),
-            date_and_time: row.get("DateAndTime").unwrap_or_default(),
-            millitm: row.get("Millitm").unwrap_or_default(),
-            tag_index: row.get("TagIndex").unwrap_or_default(),
-            val: row.get("Val").unwrap_or_default(),
-            status: row.get("Status").unwrap_or_default(),
-            marker: row.get("Marker").unwrap_or_default(),
+    // The query you want to run
+    let query = "SELECT TOP (10) [Millitm] FROM [Datos_Envasado].[dbo].[FloatTable]";
+    // let query = "SELECT name FROM sys.databases;";
+    // let query = "SELECT [permission_name] FROM sys.fn_my_permissions(NULL, 'SERVER');";
+    // let query = "SELECT @@SERVERNAME;";
+
+    // Execute the query and collect results
+    let mut stream = client.simple_query(query).await.map_err(|e| format!("Failed to execute query: {}", e))?;
+    let mut results = Vec::new();
+
+    // Collect the first 10 rows (if available)
+    while let Some(item) = stream.next().await {
+        match item {
+            Ok(tiberius::QueryItem::Row(row)) => {
+                // Extract the value from the first column (index 0)
+                if let Some(value) = row.try_get::<i16, _>(0).map_err(|e| format!("Error getting value: {}", e))? {
+                    results.push(value);
+                    // results.push(value.to_string());
+                }
+            }
+            Ok(_) => {
+                // Handle any other possible QueryItem, such as Metadata
+            }
+            Err(e) => {
+                return Err(format!("Error fetching row: {}", e));
+            }
         }
-    }).collect();
+    }
 
-    Ok(descargas)
+    Ok(results)
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, add_numbers, test_db])
+        .invoke_handler(tauri::generate_handler![greet, add_numbers, fetch_data])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

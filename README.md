@@ -17,17 +17,14 @@ Aplicación para SpeedAgro, para convertir sus archivos SQL a Excel
 
 
 ## DATABASE
-This database is just for testing purposes
 ### Prerequisites
-- Have "Docker Desktop" installed
+- Have "Microsoft SSMS" installed
 
-### Install database and database administrator
-- go to root folder
-- run `docker-compose -p speed-agro -f up -d`
-- go to localhost:8081 in the browser
-- log in using user: "root" & password: "root"
-- create a new database named "speed_agro" using utf8mb4_general_ci as collation
-- import speed_agro.sql file
+### Restore database
+- Open MSSMS
+- Right click on "Databases"
+- Click on "Restore database"
+- Restore one by one all the databases from "database-production" directory
 
 ### Open database and database administrator
 each time you want to play with it, just:

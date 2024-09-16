@@ -11,10 +11,11 @@ edition = "2021"
 tauri-build = { version = "1", features = [] }
 
 [dependencies]
-tauri = { version = "1", features = ["shell-open"] }
-serde = { version = "1", features = ["derive"] }
-mysql = "25.0.1"
-serde_json = "1"
+tauri = { version = "1", features = [ "dialog-open", "dialog-save", "dialog-message", "shell-open"] }
+tiberius = { version = "0.12", features = ["sql-browser-tokio", "native-tls"] }
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["compat"] }
+futures = "0.3"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
