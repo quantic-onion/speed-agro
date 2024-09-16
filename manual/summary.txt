@@ -1,0 +1,9 @@
+La info la guarda cada cosa en una base de datos diferente.
+Cada base de datos tiene el mismo formato de tres tablas con la misma estructura.
+Podés ver el contenido de las 3 tablas en la imagen database-structure.jpg
+
+Los valores que nos interesan son
+TagTable.TagName (linkeado por TagIndex)
+FloatTable.TagIndex
+FloatTable.DateAndTime
+FloatTable.Status

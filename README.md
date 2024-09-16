@@ -17,6 +17,8 @@ Aplicación para SpeedAgro, para convertir sus archivos SQL a Excel
 
 
 ## DATABASE
+Read the manual/summary.txt file to understand the database
+
 ### Prerequisites
 - Have "Microsoft SSMS" installed
 
