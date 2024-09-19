@@ -3,7 +3,8 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 // stores
 import { useDataToReport } from '@/stores/data-to-report';
-const { isLoading, selectedReportType, descargas, envasado, formulador } = storeToRefs(useDataToReport());
+// const { isLoading, selectedReportType, descargas, envasado, formulador } = storeToRefs(useDataToReport());
+const { isLoading } = storeToRefs(useDataToReport());
 
 const isReadyToDownload = ref(false);
 

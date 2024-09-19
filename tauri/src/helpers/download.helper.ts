@@ -1,11 +1,6 @@
 import * as XLSX from 'xlsx';
-
-type DatabaseResponseItem = {
-  total: number;
-  tag_index: number;
-  tag_name: string;
-}
-type DatabaseResponse = DatabaseResponseItem[];
+// types
+import { DatabaseResponse } from '@/types/general.type';
 
 function prepareData(data: DatabaseResponse) {
   return data.map((item) => ({

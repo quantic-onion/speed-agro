@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { downloadHelper } from '@/helpers/download.helper';
 // types
 import { ReportType } from '@/types/general.type';
+import { DatabaseResponse } from '@/types/general.type';
 type GetParams = {
   minDate: string;
   maxDate: string;
@@ -24,7 +25,7 @@ export const apiHelpers = {
         minDate: params.minDate,
         maxDate: params.maxDate,
       }
-      const response = await invoke('fetch_data', apiParams);
+      const response = await invoke('fetch_data', apiParams) as DatabaseResponse;
       downloadHelper.excel(response, fileName);
     } catch (error) {
       alert(error);
