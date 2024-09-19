@@ -6,4 +6,4 @@ Los valores que nos interesan son
 TagTable.TagName (linkeado por TagIndex)
 FloatTable.TagIndex
 FloatTable.DateAndTime
-FloatTable.Status
+FloatTable.Val

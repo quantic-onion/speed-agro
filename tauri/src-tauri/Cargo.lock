@@ -2695,6 +2695,7 @@ name = "speed-agro"
 version = "0.1.0"
 dependencies = [
  "futures",
+ "serde",
  "tauri",
  "tauri-build",
  "tiberius",

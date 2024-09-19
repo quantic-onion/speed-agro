@@ -1,0 +1,24 @@
+
+- - - BASE QUERY
+SELECT TOP (1000)
+    [DateAndTime]
+    ,[FloatTable].[TagIndex]
+    ,[Val]
+    ,[TagTable].[TagName]
+FROM [Datos_Envasado].[dbo].[FloatTable]
+INNER JOIN [Datos_Envasado].[dbo].[TagTable] ON [TagTable].[TagIndex] = [FloatTable].[TagIndex]
+WHERE CAST([DateAndTime] AS DATE) > '2024-04-28'
+ORDER BY [DateAndTime], [Millitm]
+
+
+
+
+- - - SUM QUERY
+SELECT TOP (1000)
+    SUM([Val]) AS 'Total'
+    ,[TagTable].[TagIndex]
+    ,[TagTable].[TagName]
+FROM [Datos_Envasado].[dbo].[FloatTable]
+INNER JOIN [Datos_Envasado].[dbo].[TagTable] ON [TagTable].[TagIndex] = [FloatTable].[TagIndex]
+WHERE CAST([DateAndTime] AS DATE) > '2024-04-28'
+GROUP BY [TagTable].[TagName], [TagTable].[TagIndex]

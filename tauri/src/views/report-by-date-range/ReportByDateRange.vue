@@ -1,16 +1,27 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
 // components
 import ReportItem from '@/components/report-item/ReportItem.vue';
 import DateSelector from '@/components/date-selector/DateSelector.vue';
 // helpers
 import { dateHelpers } from '@/helpers/date.helpers';
+import { apiHelpers } from '@/helpers/api.helpers';
+// stores
+import { useDataToReport } from '@/stores/data-to-report';
 
+const { selectedReportType } = storeToRefs(useDataToReport());
 const selectedDateStart = ref(dateHelpers.getDate({ months: -3 }));
 const selectedDateEnd = ref(dateHelpers.getDate());
 
 function download() {
-  console.log('DESCARGO', selectedDateStart.value, selectedDateEnd.value);
+  const params = {
+    minDate: selectedDateStart.value,
+    maxDate: selectedDateEnd.value,
+  }
+  const fileName = `Reporte [${selectedReportType.value}] personalizado de ${selectedDateStart.value} a ${selectedDateEnd.value}`;
+  const endpoint = 'descargas';
+  apiHelpers.getAndDownload(endpoint, params, fileName);
 }
 </script>
 

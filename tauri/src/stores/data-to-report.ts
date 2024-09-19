@@ -35,20 +35,20 @@ export const useDataToReport = defineStore({
   actions: {
     async setDescargas() {
       this.loadingQuantity += 1;
-      const res = await apiHelpers.get('descargas');
-      this.descargas = res;
+      // const res = await apiHelpers.testConnection('descargas');
+      // this.descargas = res;
       this.loadingQuantity -= 1;
     },
     async setEnvasado() {
       this.loadingQuantity += 1;
-      const res = await apiHelpers.get('envasado')
-      this.envasado = res;
+      // const res = await apiHelpers.testConnection('envasado')
+      // this.envasado = res;
       this.loadingQuantity -= 1;
     },
     async setFormulador() {
       this.loadingQuantity += 1;
-      const res = await apiHelpers.get('formulador')
-      this.formulador = res;
+      // const res = await apiHelpers.testConnection('formulador')
+      // this.formulador = res;
       this.loadingQuantity -= 1;
     },
     setEverything() {
