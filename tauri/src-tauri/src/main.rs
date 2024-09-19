@@ -29,7 +29,7 @@ struct DataItem {
 async fn fetch_data(database: String, min_date: String, max_date: String) -> Result<Vec<DataItem>, String> {
     // Configure the connection to SQL Server using Windows Authentication
     let mut config = Config::new();
-    config.host("Licha-PC");  // Localhost since you are connecting to a local instance
+    config.host("Localhost");  // Localhost since you are connecting to a local instance
     config.port(1433);         // Default SQL Server port
     config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
 
