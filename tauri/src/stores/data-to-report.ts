@@ -7,12 +7,21 @@ import type { Formulador } from '@/types/formulador.model';
 // helpers
 // import { apiHelpers } from '@/helpers/api.helpers';
 
+type InstanceSettings = {
+  host: string;
+  port: number;
+  instance: string;
+  user: string;
+  pass: string;
+};
+
 interface State {
   selectedReportType: ReportType;
   loadingQuantity: number;
   descargas: Descarga[];
   envasado: Envasado[];
   formulador: Formulador[];
+  instanceSettings: InstanceSettings;
 }
 
 export const useDataToReport = defineStore({
@@ -24,6 +33,20 @@ export const useDataToReport = defineStore({
     descargas: [],
     envasado: [],
     formulador: [],
+    instanceSettings: {
+      // LOCALHOST
+      // host: 'LICHA-PC',
+      // port: 1433,
+      // instance: 'SQLEXPRESS',
+      // user: 'licha',
+      // pass: 'ZjWH4EtCdHK&amp;lFPRfqp#MKd',
+      // PRODUCTION
+      host: 'SERVER-PRO',
+      port: 1433,
+      instance: 'SQLEXPRESS',
+      user: 'produccion',
+      pass: 'marinascada',
+    }
   }),
 
   getters: {
@@ -33,6 +56,9 @@ export const useDataToReport = defineStore({
   },
 
   actions: {
+    updateInstanceSettings(newSettings: InstanceSettings) {
+      this.instanceSettings = newSettings;
+    },
     async setDescargas() {
       this.loadingQuantity += 1;
       // const res = await apiHelpers.testConnection('descargas');

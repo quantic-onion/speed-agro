@@ -26,15 +26,49 @@ struct DataItem {
 }
 
 #[tauri::command]
-async fn fetch_data(database: String, min_date: String, max_date: String) -> Result<Vec<DataItem>, String> {
+async fn fetch_data(
+    host: String,
+    port: u16,
+    instance: String,
+    user: String,
+    pass: String,
+    database: String,
+    min_date: String,
+    max_date: String,
+) -> Result<Vec<DataItem>, String> {
     // Configure the connection to SQL Server using Windows Authentication
     let mut config = Config::new();
-    config.host("Localhost");  // Localhost since you are connecting to a local instance
+
+
+    // LOCAHOST SETTINGS 1
+    // config.host("Localhost");  // Localhost since you are connecting to a local instance
+    // config.port(1433);         // Default SQL Server port
+    // config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
+    // config.authentication(AuthMethod::Integrated);
+    // config.trust_cert();       // Trust certificate for secure connection
+
+    // LOCAHOST SETTINGS 2
+    // config.host("LICHA-PC");  // Localhost since you are connecting to a local instance
+    // config.port(1433);         // Default SQL Server port
+    // config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
+    // config.authentication(AuthMethod::sql_server("licha", "ZjWH4EtCdHK&amp;lFPRfqp#MKd"));
+    // config.trust_cert();       // Trust certificate for secure connection
+
+    // SPEED AGRO SETTINGS
+    config.host("SERVER-PRO");  // Localhost since you are connecting to a local instance
+    // config.host("192.168.0.47");  // Localhost since you are connecting to a local instance
     config.port(1433);         // Default SQL Server port
     config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
-
-    config.authentication(AuthMethod::Integrated);
+    config.authentication(AuthMethod::sql_server("produccion", "marinascada"));
     config.trust_cert();       // Trust certificate for secure connection
+
+    // DYNAMIC SETTINGS
+    config.host(host);
+    config.port(port);
+    config.instance_name(instance);
+    config.authentication(AuthMethod::sql_server(user, pass));
+    config.trust_cert();  
+
     
     // The database to connect to
     // config.database("Datos_Envasado");

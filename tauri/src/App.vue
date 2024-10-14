@@ -29,6 +29,10 @@ html
   flex-direction column
   gap 2rem
   padding 2rem
+  width 100vw
+  height 100vh
+  color: rgba(235, 235, 235, 0.64);
+  background: #181818;
   .main-logo-container
     h1
       color $color-primary

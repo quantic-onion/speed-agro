@@ -3,15 +3,15 @@ Aplicación para SpeedAgro, para convertir sus archivos SQL a Excel
 
 ## FRONTEND
 ### Frontend Setup
-- go to frontend folder
+- go to tauri folder
 - run `bun install`
 
 ### Run Frontend for Development
-- go to frontend folder
+- go to tauri folder
 - run `bun run tauri dev`
 
 ### Deploy Frontend
-- go to frontend folder
+- go to tauri folder
 - run `bun run tauri build`
 - copy executable from src-tauri/target/release directory to client server
 
