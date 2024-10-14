@@ -57,14 +57,16 @@ async fn fetch_data(
     // SPEED AGRO SETTINGS
     config.host("SERVER-PRO");  // Localhost since you are connecting to a local instance
     // config.host("192.168.0.47");  // Localhost since you are connecting to a local instance
-    config.port(1433);         // Default SQL Server port
-    config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
-    config.authentication(AuthMethod::sql_server("produccion", "marinascada"));
-    config.trust_cert();       // Trust certificate for secure connection
+    // config.port(1433);         // Default SQL Server port
+    // config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
+    // config.authentication(AuthMethod::sql_server("produccion", "marinascada"));
+    // config.trust_cert();       // Trust certificate for secure connection
 
     // DYNAMIC SETTINGS
     config.host(host);
-    config.port(port);
+    if port != 0 {
+        config.port(port);
+    }
     config.instance_name(instance);
     config.authentication(AuthMethod::sql_server(user, pass));
     config.trust_cert();  

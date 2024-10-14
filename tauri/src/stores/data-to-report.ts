@@ -24,6 +24,21 @@ interface State {
   instanceSettings: InstanceSettings;
 }
 
+const defaultInstanceSettings: InstanceSettings = {
+  // LOCALHOST
+  // host: 'LICHA-PC',
+  // port: 1433,
+  // instance: 'SQLEXPRESS',
+  // user: 'licha',
+  // pass: 'ZjWH4EtCdHK&amp;lFPRfqp#MKd',
+  // PRODUCTION
+  host: 'SERVER-PRO',
+  port: 1433,
+  instance: 'SQLEXPRESS',
+  user: 'produccion',
+  pass: 'marinascada',
+}
+
 export const useDataToReport = defineStore({
   id: 'data-to-report',
 
@@ -33,20 +48,7 @@ export const useDataToReport = defineStore({
     descargas: [],
     envasado: [],
     formulador: [],
-    instanceSettings: {
-      // LOCALHOST
-      // host: 'LICHA-PC',
-      // port: 1433,
-      // instance: 'SQLEXPRESS',
-      // user: 'licha',
-      // pass: 'ZjWH4EtCdHK&amp;lFPRfqp#MKd',
-      // PRODUCTION
-      host: 'SERVER-PRO',
-      port: 1433,
-      instance: 'SQLEXPRESS',
-      user: 'produccion',
-      pass: 'marinascada',
-    }
+    instanceSettings: { ...defaultInstanceSettings },
   }),
 
   getters: {
@@ -58,6 +60,9 @@ export const useDataToReport = defineStore({
   actions: {
     updateInstanceSettings(newSettings: InstanceSettings) {
       this.instanceSettings = newSettings;
+    },
+    resetToDefaultInstanceSettings() {
+      this.instanceSettings = { ...defaultInstanceSettings };
     },
     async setDescargas() {
       this.loadingQuantity += 1;

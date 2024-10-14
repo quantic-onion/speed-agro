@@ -32,6 +32,7 @@ export const apiHelpers = {
         minDate: params.minDate,
         maxDate: params.maxDate,
       }
+      if (!apiParams.port) apiParams.port = 0;
       const response = await invoke('fetch_data', apiParams) as DatabaseResponse;
       downloadHelper.excel(response, fileName);
     } catch (error) {
