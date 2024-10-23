@@ -1,6 +1,9 @@
 # speed-agro
 Aplicación para SpeedAgro, para convertir sus archivos SQL a Excel
 
+## BACKEND
+install this shit: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver15
+
 ## FRONTEND
 ### Frontend Setup
 - go to tauri folder
@@ -21,6 +24,8 @@ Read the manual/summary.txt file to understand the database
 
 ### Prerequisites
 - Have "Microsoft SSMS" installed
+- pip install pyinstaller
+
 
 ### Restore database
 - Open MSSMS

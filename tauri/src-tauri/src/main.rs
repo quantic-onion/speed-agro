@@ -7,6 +7,9 @@ use tokio::net::TcpStream;
 use tokio_util::compat::TokioAsyncWriteCompatExt;
 use std::collections::HashMap;
 use serde::Serialize;
+use pyo3::prelude::*;
+use pyo3::wrap_pyfunction;
+use tauri::command;
 
 #[tauri::command]
 async fn greet(name: String) -> String {
@@ -37,45 +40,44 @@ async fn fetch_data(
     max_date: String,
 ) -> Result<Vec<DataItem>, String> {
     // Configure the connection to SQL Server using Windows Authentication
-    let mut config = Config::new();
+    // let mut config = Config::new();
 
-
-    // LOCAHOST SETTINGS 1
-    // config.host("Localhost");  // Localhost since you are connecting to a local instance
-    // config.port(1433);         // Default SQL Server port
-    // config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
+    // LOCAHOST
+    // config.host("Localhost");
+    // config.instance_name("SQLEXPRESS");
     // config.authentication(AuthMethod::Integrated);
-    // config.trust_cert();       // Trust certificate for secure connection
 
-    // LOCAHOST SETTINGS 2
-    // config.host("LICHA-PC");  // Localhost since you are connecting to a local instance
-    // config.port(1433);         // Default SQL Server port
-    // config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
-    // config.authentication(AuthMethod::sql_server("licha", "ZjWH4EtCdHK&amp;lFPRfqp#MKd"));
-    // config.trust_cert();       // Trust certificate for secure connection
+    // LICHA
+    // config.host("LICHA-PC");
+    // config.instance_name("SQLEXPRESS");
+    // config.authentication(AuthMethod::sql_server("licha", "ZjWH4EtCdHK&amp;lFPRfqp#MKd___"));
 
-    // SPEED AGRO SETTINGS
-    config.host("SERVER-PRO");  // Localhost since you are connecting to a local instance
-    // config.host("192.168.0.47");  // Localhost since you are connecting to a local instance
-    // config.port(1433);         // Default SQL Server port
-    // config.instance_name("SQLEXPRESS"); // Your SQL Server Express instance name
+    // SPEED AGRO
+    // config.host("SERVER-PRO"); // or 192.168.0.47
+    // config.instance_name("SQLEXPRESS");
     // config.authentication(AuthMethod::sql_server("produccion", "marinascada"));
-    // config.trust_cert();       // Trust certificate for secure connection
 
-    // DYNAMIC SETTINGS
-    config.host(host);
-    if port != 0 {
-        config.port(port);
-    }
-    config.instance_name(instance);
-    config.authentication(AuthMethod::sql_server(user, pass));
-    config.trust_cert();  
+    // DYNAMIC
+    // config.host(host);
+    // config.instance_name(instance);
+    // config.authentication(AuthMethod::sql_server(user, pass));
 
+    // every connection
+    // config.port(1433);
+    // config.trust_cert();
     
-    // The database to connect to
-    // config.database("Datos_Envasado");
+    
+    let CONN_STR_PORT = "server=tcp:SERVER-PRO\\SQLEXPRESS,1433;database=Datos_Envasado;user id=produccion;password=marinascada;TrustServerCertificate=true";
+    // let CONN_STR_PORT = "server=tcp:SERVER-PRO\\SQLEXPRESS,1433;database=Datos_Envasado;IntegratedSecurity=true;TrustServerCertificate=true";
+    // let CONN_STR_PORT = "server=tcp:LICHA-PC\\SQLEXPRESS,1433;database=Datos_Envasado;IntegratedSecurity=true;TrustServerCertificate=true";
 
+    let config = Config::from_ado_string(&CONN_STR_PORT).map_err(|e| e.to_string())?;
+    // let config = Config::from_ado_string(&CONN_STR_PORT)?;
     // Establish the TCP connection
+    // let connection_string = config.get_addr();
+    // let connection_string = "SERVER-PRO\\SQLEXPRESS:1433";
+    // let tcp = TcpStream::connect(config.get_addr()).await.map_err(|e| format!("Failed to connect: {} - {}", connection_string, e))?;
+    
     let tcp = TcpStream::connect(config.get_addr()).await.map_err(|e| format!("Failed to connect: {}", e))?;
     let tcp = tcp.compat_write();
 
@@ -144,10 +146,53 @@ async fn fetch_data(
     Ok(results)
 }
 
+
+#[pyfunction]
+fn get_random_number_from_python() -> PyResult<i32> {
+    Python::with_gil(|py| {
+        let py_module = PyModule::from_code(
+            py,
+            r#"
+import random
+
+def get_random_number():
+    return random.randint(1, 100)
+            "#,
+            "",
+            "",
+        )?;
+
+        let get_random_number = py_module.getattr("get_random_number")?;
+        let result = get_random_number.call0()?.extract::<i32>()?;
+        Ok(result)
+    })
+}
+
+#[tauri::command]
+fn generate_random_number() -> i32 {
+    // Attempt to call the Python function and log errors if any
+    match get_random_number_from_python() {
+        Ok(number) => number,
+        Err(e) => {
+            // Log the error message
+            println!("PYTHON ERROR: {:?}", e);
+            3333 // Fallback to 0 in case of error
+        }
+    }
+}
+
+// #[tauri::command]
+// fn add_numbers(a: i32, b: i32) -> i32 {
+//     a + b
+// }
+
 #[tokio::main]
 async fn main() {
+    // Initialize the Python interpreter for multi-threaded use
+    pyo3::prepare_freethreaded_python();
+
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, add_numbers, fetch_data])
+        .invoke_handler(tauri::generate_handler![greet, add_numbers, fetch_data, generate_random_number])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

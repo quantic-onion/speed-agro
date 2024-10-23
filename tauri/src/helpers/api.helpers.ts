@@ -23,21 +23,27 @@ function getDatabaseName(reportType: ReportType) {
 
 export const apiHelpers = {
   async getAndDownload(reportType: ReportType, params: GetParams, fileName: string) {
-    const { instanceSettings } = storeToRefs(useDataToReport());
     try {
-      const database = getDatabaseName(reportType);
-      const apiParams = {
-        ...instanceSettings.value,
-        database,
-        minDate: params.minDate,
-        maxDate: params.maxDate,
-      }
-      if (!apiParams.port) apiParams.port = 0;
-      const response = await invoke('fetch_data', apiParams) as DatabaseResponse;
-      downloadHelper.excel(response, fileName);
+      const randomNumber = await invoke('generate_random_number')
+      console.log('Random number from Python:', randomNumber)
     } catch (error) {
-      alert(error);
-      console.error('Error al llamar a la función de Tauri:', error);
+      console.error('Error fetching random number:', error)
     }
+    // const { instanceSettings } = storeToRefs(useDataToReport());
+    // try {
+    //   const database = getDatabaseName(reportType);
+    //   const apiParams = {
+    //     ...instanceSettings.value,
+    //     database,
+    //     minDate: params.minDate,
+    //     maxDate: params.maxDate,
+    //   }
+    //   if (!apiParams.port) apiParams.port = 0;
+    //   const response = await invoke('fetch_data', apiParams) as DatabaseResponse;
+    //   downloadHelper.excel(response, fileName);
+    // } catch (error) {
+    //   alert(error);
+    //   console.error('Error al llamar a la función de Tauri:', error);
+    // }
   },
 };

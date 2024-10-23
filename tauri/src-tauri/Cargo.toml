@@ -17,6 +17,7 @@ tokio = { version = "1", features = ["full"] }
 tokio-util = { version = "0.7", features = ["compat"] }
 futures = "0.3"
 serde = { version = "1.0", features = ["derive"] }
+pyo3 = { version = "0.18", features = ["extension-module"] }
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
