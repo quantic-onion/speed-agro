@@ -24,8 +24,8 @@ function getDatabaseName(reportType: ReportType) {
 export const apiHelpers = {
   async getAndDownload(reportType: ReportType, params: GetParams, fileName: string) {
     try {
-      const randomNumber = await invoke('generate_random_number')
-      console.log('Random number from Python:', randomNumber)
+      const result = await invoke('fetch_data')
+      console.log('DATABASE DATA:', result)
     } catch (error) {
       console.error('Error fetching random number:', error)
     }

@@ -5,9 +5,9 @@ server = 'LICHA-PC'
 username = 'licha'
 password = 'ZjWH4EtCdHK'
 # SETTINGS SPEED AGRO
-server = 'SERVER-PRO\\SQLEXPRESS'
-username = 'produccion'
-password = 'marinascada'
+# server = 'SERVER-PRO\\SQLEXPRESS'
+# username = 'produccion'
+# password = 'marinascada'
 
 # HARDCODED
 database = 'Datos_Envasado'
@@ -31,20 +31,28 @@ ORDER BY Total DESC
 connection_string = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};UID={username};PWD={password};TrustServerCertificate=yes'
 
 # Establecer la conexión
-conn = None
-try:
-    conn = pyodbc.connect(connection_string)
-    # Realizar operaciones con la base de datos
-    cursor = conn.cursor()
-    cursor.execute(query)
-    row = cursor.fetchone()
-    while row:
-        print(row)
+def run_query():
+    conn = None
+    result = []
+    try:
+        conn = pyodbc.connect(connection_string)
+        # Realizar operaciones con la base de datos
+        cursor = conn.cursor()
+        cursor.execute(query)
         row = cursor.fetchone()
+        while row:
+            # print("ROW", row)
+            result.append({
+                "Total": row[0],
+                "TagIndex": row[1],
+                "TagName": row[2],
+            })
+            row = cursor.fetchone()
+        # Cerrar la conexión
+        conn.close()
+    except Exception as e:
+        print(f"Error al conectar: {e}")
+    return result
 
-    # Cerrar la conexión
-    conn.close()
-except Exception as e:
-    print(f"Error al conectar: {e}")
 
-
+run_query()
