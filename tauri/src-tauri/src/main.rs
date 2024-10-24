@@ -4,7 +4,7 @@
 use pyo3::prelude::*;
 
 #[pyfunction]
-fn get_database_data() -> PyResult<String> {
+fn get_database_data(database: String, min_date: String, max_date: String) -> PyResult<String> {
     Python::with_gil(|py| {
         let py_module = PyModule::from_code(
             py,
@@ -21,29 +21,30 @@ password = 'ZjWH4EtCdHK'
 # username = 'produccion'
 # password = 'marinascada'
 
-# HARDCODED
-database = 'Datos_Envasado'
-min_date = '2024-01-01'
-max_date = '2024-12-12'
-
-query = f"""
-SELECT TOP (1000)
-    SUM([Val]) AS 'Total'
-    ,[TagTable].[TagIndex]
-    ,[TagTable].[TagName]
-FROM [{database}].[dbo].[FloatTable]
-INNER JOIN [{database}].[dbo].[TagTable] ON [TagTable].[TagIndex] = [FloatTable].[TagIndex]
-WHERE
-    CAST([DateAndTime] AS DATE) >= '{min_date}'
-    AND CAST([DateAndTime] AS DATE) <= '{max_date}'
-GROUP BY [TagTable].[TagName], [TagTable].[TagIndex]
-ORDER BY Total DESC
-"""
-
-connection_string = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};UID={username};PWD={password};TrustServerCertificate=yes'
 
 # Establecer la conexión
-def run_query():
+def run_query(database, min_date, max_date):
+    # HARDCODED
+    # database = 'Datos_Envasado'
+    # min_date = '2024-01-01'
+    # max_date = '2024-12-12'
+
+    query = f"""
+    SELECT TOP (1000)
+        SUM([Val]) AS 'Total'
+        ,[TagTable].[TagIndex]
+        ,[TagTable].[TagName]
+    FROM [{database}].[dbo].[FloatTable]
+    INNER JOIN [{database}].[dbo].[TagTable] ON [TagTable].[TagIndex] = [FloatTable].[TagIndex]
+    WHERE
+        CAST([DateAndTime] AS DATE) >= '{min_date}'
+        AND CAST([DateAndTime] AS DATE) <= '{max_date}'
+    GROUP BY [TagTable].[TagName], [TagTable].[TagIndex]
+    ORDER BY Total DESC
+    """
+
+    connection_string = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};UID={username};PWD={password};TrustServerCertificate=yes'
+
     conn = None
     result = []
     try:
@@ -66,22 +67,30 @@ def run_query():
         print(f"Error al conectar: {e}")
     # return
     return str(json.dumps(result))
-
             "#,
             "",
             "",
         )?;
 
         let run_query = py_module.getattr("run_query")?;
-        let result = run_query.call0()?.extract::<&str>()?;
+        let result = run_query.call1((database, min_date, max_date))?;
         Ok(result.to_string())
     })
 }
 
 #[tauri::command]
-fn fetch_data() -> String {
+fn fetch_data(
+    // host: String,
+    // port: u16,
+    // instance: String,
+    // user: String,
+    // pass: String,
+    database: String,
+    min_date: String,
+    max_date: String,
+) -> String {
     // Attempt to call the Python function and log errors if any
-    match get_database_data() {
+    match get_database_data(database, min_date, max_date) {
         Ok(res) => res,
         Err(e) => {
             // Log the error message

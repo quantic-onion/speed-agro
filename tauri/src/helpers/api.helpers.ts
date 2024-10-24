@@ -24,17 +24,18 @@ function getDatabaseName(reportType: ReportType) {
 export const apiHelpers = {
   async getAndDownload(reportType: ReportType, params: GetParams, fileName: string) {
     try {
-      const { instanceSettings } = storeToRefs(useDataToReport());
+      // const { instanceSettings } = storeToRefs(useDataToReport());
       const database = getDatabaseName(reportType);
       const apiParams = {
-        ...instanceSettings.value,
+        // ...instanceSettings.value,
         database,
         minDate: params.minDate,
         maxDate: params.maxDate,
       }
-      if (!apiParams.port) apiParams.port = 0;
+      // if (!apiParams.port) apiParams.port = 0;
       // const response = await invoke('fetch_data', apiParams) as DatabaseResponse;
-      const jsonString: string = await invoke('fetch_data')
+      console.log('apiParams', apiParams);
+      const jsonString: string = await invoke('fetch_data', apiParams);
       const response = JSON.parse(jsonString);
       console.log('DATABASE DATA:', response)
       downloadHelper.excel(response, fileName);

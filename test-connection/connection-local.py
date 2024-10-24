@@ -10,29 +10,25 @@ password = 'ZjWH4EtCdHK'
 # username = 'produccion'
 # password = 'marinascada'
 
-# HARDCODED
-database = 'Datos_Envasado'
-min_date = '2024-01-01'
-max_date = '2024-12-12'
-
-query = f"""
-SELECT TOP (1000)
-    SUM([Val]) AS 'Total'
-    ,[TagTable].[TagIndex]
-    ,[TagTable].[TagName]
-FROM [{database}].[dbo].[FloatTable]
-INNER JOIN [{database}].[dbo].[TagTable] ON [TagTable].[TagIndex] = [FloatTable].[TagIndex]
-WHERE
-    CAST([DateAndTime] AS DATE) >= '{min_date}'
-    AND CAST([DateAndTime] AS DATE) <= '{max_date}'
-GROUP BY [TagTable].[TagName], [TagTable].[TagIndex]
-ORDER BY Total DESC
-"""
-
-connection_string = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};UID={username};PWD={password};TrustServerCertificate=yes'
 
 # Establecer la conexión
-def run_query():
+def run_query(database, min_date, max_date):
+    query = f"""
+    SELECT TOP (1000)
+        SUM([Val]) AS 'Total'
+        ,[TagTable].[TagIndex]
+        ,[TagTable].[TagName]
+    FROM [{database}].[dbo].[FloatTable]
+    INNER JOIN [{database}].[dbo].[TagTable] ON [TagTable].[TagIndex] = [FloatTable].[TagIndex]
+    WHERE
+        CAST([DateAndTime] AS DATE) >= '{min_date}'
+        AND CAST([DateAndTime] AS DATE) <= '{max_date}'
+    GROUP BY [TagTable].[TagName], [TagTable].[TagIndex]
+    ORDER BY Total DESC
+    """
+
+    connection_string = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};UID={username};PWD={password};TrustServerCertificate=yes'
+
     conn = None
     result = []
     try:
@@ -57,4 +53,9 @@ def run_query():
     return str(json.dumps(result))
 
 
-run_query()
+
+# HARDCODED
+database = 'Datos_Envasado'
+min_date = '2024-01-01'
+max_date = '2024-12-12'
+print(run_query(database, min_date, max_date))

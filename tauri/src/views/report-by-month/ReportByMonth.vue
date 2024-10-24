@@ -45,7 +45,7 @@ function download() {
     maxDate: lastDayOfMonth,
   }
   const fileName = `Reporte [${selectedReportType.value}] del mes ${selectedYear.value}-${selectedMonth.value}`;
-  const endpoint = 'descargas';
+  const endpoint = selectedReportType.value;
   apiHelpers.getAndDownload(endpoint, params, fileName);
 }
 </script>

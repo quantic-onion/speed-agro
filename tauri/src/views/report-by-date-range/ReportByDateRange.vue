@@ -20,7 +20,7 @@ function download() {
     maxDate: selectedDateEnd.value,
   }
   const fileName = `Reporte [${selectedReportType.value}] personalizado de ${selectedDateStart.value} a ${selectedDateEnd.value}`;
-  const endpoint = 'descargas';
+  const endpoint = selectedReportType.value;
   apiHelpers.getAndDownload(endpoint, params, fileName);
 }
 </script>

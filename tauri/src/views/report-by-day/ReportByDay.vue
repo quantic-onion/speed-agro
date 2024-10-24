@@ -20,7 +20,7 @@ async function download() {
     maxDate: selectedDate.value,
   }
   const fileName = `Reporte [${selectedReportType.value}] del día ${selectedDate.value}`;
-  const endpoint = 'descargas';
+  const endpoint = selectedReportType.value;
   apiHelpers.getAndDownload(endpoint, params, fileName);
 }
 </script>
