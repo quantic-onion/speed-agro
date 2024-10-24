@@ -1,4 +1,5 @@
 import pyodbc
+import json
 
 # SETTINGS LICHA
 server = 'LICHA-PC'
@@ -43,16 +44,17 @@ def run_query():
         while row:
             # print("ROW", row)
             result.append({
-                "Total": row[0],
-                "TagIndex": row[1],
-                "TagName": row[2],
+                "total": row[0],
+                "tag_index": row[1],
+                "tag_name": row[2],
             })
             row = cursor.fetchone()
         # Cerrar la conexión
         conn.close()
     except Exception as e:
         print(f"Error al conectar: {e}")
-    return result
+    # return
+    return str(json.dumps(result))
 
 
 run_query()

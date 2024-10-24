@@ -24,26 +24,23 @@ function getDatabaseName(reportType: ReportType) {
 export const apiHelpers = {
   async getAndDownload(reportType: ReportType, params: GetParams, fileName: string) {
     try {
-      const result = await invoke('fetch_data')
-      console.log('DATABASE DATA:', result)
+      const { instanceSettings } = storeToRefs(useDataToReport());
+      const database = getDatabaseName(reportType);
+      const apiParams = {
+        ...instanceSettings.value,
+        database,
+        minDate: params.minDate,
+        maxDate: params.maxDate,
+      }
+      if (!apiParams.port) apiParams.port = 0;
+      // const response = await invoke('fetch_data', apiParams) as DatabaseResponse;
+      const jsonString: string = await invoke('fetch_data')
+      const response = JSON.parse(jsonString);
+      console.log('DATABASE DATA:', response)
+      downloadHelper.excel(response, fileName);
     } catch (error) {
-      console.error('Error fetching random number:', error)
+      alert(error);
+      console.error('Error al llamar a la función de Tauri:', error);
     }
-    // const { instanceSettings } = storeToRefs(useDataToReport());
-    // try {
-    //   const database = getDatabaseName(reportType);
-    //   const apiParams = {
-    //     ...instanceSettings.value,
-    //     database,
-    //     minDate: params.minDate,
-    //     maxDate: params.maxDate,
-    //   }
-    //   if (!apiParams.port) apiParams.port = 0;
-    //   const response = await invoke('fetch_data', apiParams) as DatabaseResponse;
-    //   downloadHelper.excel(response, fileName);
-    // } catch (error) {
-    //   alert(error);
-    //   console.error('Error al llamar a la función de Tauri:', error);
-    // }
   },
 };

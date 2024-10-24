@@ -10,7 +10,8 @@ function prepareData(data: DatabaseResponse) {
 }
 
 export const downloadHelper = {
-  excel(data: DatabaseResponse, fileName: string) {    
+  excel(data: DatabaseResponse, fileName: string) {
+    console.log('EXCEL', data);
     // Crear un nuevo libro de trabajo
     const workbook = XLSX.utils.book_new();
     
