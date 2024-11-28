@@ -3,17 +3,9 @@ import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 // stores
 import { useDataToReport } from '@/stores/data-to-report';
-// const { isLoading, selectedReportType, descargas, envasado, formulador } = storeToRefs(useDataToReport());
 const { isLoading } = storeToRefs(useDataToReport());
 
 const isReadyToDownload = ref(false);
-
-// const isReadyToDownload = computed(() => {
-//   if (selectedReportType.value === 'descargas') return !!descargas.value.length;
-//   if (selectedReportType.value === 'envasado') return !!envasado.value.length;
-//   if (selectedReportType.value === 'formulador') return !!formulador.value.length;
-//   return false;
-// });
 
 const computedIcon = computed(() => {
   if (isLoading.value) return 'spinner';

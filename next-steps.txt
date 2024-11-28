@@ -1,0 +1,12 @@
+Son 3 reportes que tenemos que generar.
+
+formulaciones
+consumos totales
+datos generales de envasadora, tapadora,  encajonado y palletizado
+
+Que el reporte se pueda hacer:
+GROUP BY date
+GROUP BY month
+GROUP BY 3month
+GROUP BY year
+

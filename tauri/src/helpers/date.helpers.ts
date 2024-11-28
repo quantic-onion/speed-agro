@@ -1,3 +1,6 @@
+// types
+import { TsDate } from '@/types/general.type';
+
 type DateDiference = {
   date?: string;
   months?: number;
@@ -17,10 +20,11 @@ export const dateHelpers = {
     const newDate = params?.date ? new Date(params.date) : new Date();
     // months
     if (params?.months) {
-      newDate.setMonth(newDate.getMonth() - params.months);
+      newDate.setMonth(newDate.getMonth() + params.months);
     }
     // days
     if (params?.days) {
+      console.log(params?.days)
       newDate.setDate(newDate.getDate() + params.days);
     }
     return this.formatDate(newDate);
@@ -32,5 +36,12 @@ export const dateHelpers = {
   getYear(params?: DateDiference) {
     const date = new Date(this.getDate(params));
     return date.getFullYear();
+  },
+  presentDate(date: TsDate) {
+    if (!date) return '';
+    const year = date.substring(2, 4);
+    const month = date.substring(5, 7);
+    const day = date.substring(8, 10);
+    return `${day} / ${month} / ${year}`;
   }
 };

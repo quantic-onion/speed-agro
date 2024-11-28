@@ -8,9 +8,9 @@ import { useDataToReport } from '@/stores/data-to-report';
 const { selectedReportType } = storeToRefs(useDataToReport());
 
 const allReportTypes = [
-  'descargas',
   'envasado',
   'formulador',
+  'consumos',
 ] as const;
 
 function updateReportType(reportType: ReportType) {

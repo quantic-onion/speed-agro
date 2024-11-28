@@ -1,11 +1,9 @@
 import { defineStore } from 'pinia'
 // types
-import type { ReportType } from '@/types/general.type';
+import type { LineNumber, ReportType } from '@/types/general.type';
 import type { Descarga } from '@/types/descarga.model';
 import type { Envasado } from '@/types/envasado.model';
 import type { Formulador } from '@/types/formulador.model';
-// helpers
-// import { apiHelpers } from '@/helpers/api.helpers';
 
 type InstanceSettings = {
   host: string;
@@ -16,9 +14,10 @@ type InstanceSettings = {
 };
 
 interface State {
+  selectedLineNumber: LineNumber;
   selectedReportType: ReportType;
   loadingQuantity: number;
-  descargas: Descarga[];
+  consumos: Descarga[];
   envasado: Envasado[];
   formulador: Formulador[];
   instanceSettings: InstanceSettings;
@@ -43,9 +42,10 @@ export const useDataToReport = defineStore({
   id: 'data-to-report',
 
   state: (): State => ({
-    selectedReportType: 'descargas',
+    selectedLineNumber: 1,
+    selectedReportType: 'envasado',
     loadingQuantity: 0,
-    descargas: [],
+    consumos: [],
     envasado: [],
     formulador: [],
     instanceSettings: { ...defaultInstanceSettings },
@@ -89,6 +89,9 @@ export const useDataToReport = defineStore({
     },
     setReportType(reportType: ReportType) {
       this.selectedReportType = reportType;
+    },
+    setLineNumber(lineNumber: LineNumber) {
+      this.selectedLineNumber = lineNumber;
     },
   },
 

@@ -7,6 +7,8 @@ import { dateHelpers } from '@/helpers/date.helpers';
 const selectedDate = defineModel<string>({ required: true });
 
 function updateDate(change: 1 | -1) {
+  // @ts-ignore
+  if (change === 1) change = 2; // this is a bug. I suppose related to time zones
   selectedDate.value = dateHelpers.getDate({ date: selectedDate.value, days: change });
 }
 </script>

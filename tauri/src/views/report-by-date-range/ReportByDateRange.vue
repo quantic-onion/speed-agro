@@ -21,7 +21,7 @@ function download() {
   }
   const fileName = `Reporte [${selectedReportType.value}] personalizado de ${selectedDateStart.value} a ${selectedDateEnd.value}`;
   const endpoint = selectedReportType.value;
-  apiHelpers.getAndDownload(endpoint, params, fileName);
+  apiHelpers.downloadReport(endpoint, params, fileName);
 }
 </script>
 

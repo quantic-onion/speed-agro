@@ -1,12 +1,17 @@
-export type ReportType = 'descargas' | 'envasado' | 'formulador';
+export type ReportType = 'consumos' | 'envasado' | 'formulador';
+export type TsDate = string;
 export type TsDatetime = string;
 export type ConstructorParams<T> = Pick<T, { [K in keyof T]: T[K] extends Function ? never : K; }[keyof T]>;
 
+export type LineNumberEnvasado = 1 | 2 | 3;
+export type LineNumberFormulador = 1 | 2 | 3 | 4;
+export type LineNumber = LineNumberEnvasado | LineNumberFormulador;
 
 export type DatabaseResponseItem = {
-  total: number;
+  value: number;
   tag_index: number;
   tag_name: string;
+  date: TsDate;
 }
 export type DatabaseResponse = DatabaseResponseItem[];
 
